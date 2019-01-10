@@ -139,10 +139,11 @@ class Game:
         print("Game starts, good luck and have fun.")
 
     def kick_enemies(self, player, new_pos):
-        for unit in self.all_units:
-            if unit.position == new_pos and unit.owner != player:
-                unit.position = 0
-                print(f"{unit.owner.name}'s unit_{unit.name} has been kicked from {new_pos} back to 0.")
+        if not self.friendly_mode:
+            for unit in self.all_units:
+                if unit.position == new_pos and unit.owner != player:
+                    unit.position = 0
+                    print(f"{unit.owner.name}'s unit_{unit.name} has been kicked from {new_pos} back to 0.")
 
     def print_board(self):
         width = len(str(self.board.size + 1)) + 1
@@ -157,8 +158,7 @@ class Game:
         unit.position += roll
         visited = [unit.position]
 
-        if not self.friendly_mode:
-            self.kick_enemies(player, unit.position)
+        self.kick_enemies(player, unit.position)
 
         while unit.position in self.board.snakes.keys() or unit.position in self.board.ladders.keys():
             if unit.position in self.board.snakes.keys():
@@ -168,8 +168,7 @@ class Game:
                 unit.position = self.board.ladders.get(unit.position)
                 print("You have found a ladder.")
 
-            if not self.friendly_mode:
-                self.kick_enemies(player, unit.position)
+            self.kick_enemies(player, unit.position)
 
             if unit.position in visited: # prevent infinite cycle
                 print(f"unit_{unit.name} has visited {unit.position} twice.")
