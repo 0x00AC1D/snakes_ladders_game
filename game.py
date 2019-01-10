@@ -202,11 +202,7 @@ class Game:
                     if unit.position >= self.board.size:
                         input(f"Player {player.name} has won the game! Congratulations!\n" + 
                                "Thank you for playing the game!")
-                        run = False
-                        break
-
-                if not run:
-                    break
+                        return
 
 if __name__ == "__main__":
     game = Game()
